@@ -23,6 +23,7 @@
             scroll-behavior: smooth;
         }
 
+        /* Hero Section */
         .hero {
             height: 100vh;
             display: flex;
@@ -58,6 +59,7 @@
             padding-left: 15px; 
         }
 
+        /* Grid */
         .portfolio-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -70,6 +72,7 @@
             overflow: hidden;
             border: 1px solid #222;
             transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: pointer; /* Indique qu'on peut cliquer */
         }
 
         .item:hover {
@@ -97,15 +100,44 @@
             transition: transform 0.5s ease;
         }
 
-        .item:hover .media-container img, 
-        .item:hover .media-container video {
-            transform: scale(1.05); 
-        }
-
         .item-info { padding: 20px; }
         .item-info h3 { margin: 0 0 10px 0; color: var(--accent); font-size: 1.2rem; }
         .item-info p { margin: 0; font-size: 0.95rem; color: var(--text-dim); }
 
+        /* --- LIGHTBOX SYSTEM --- */
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #lightbox-content {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 162, 255, 0.2);
+        }
+
+        #close-lightbox {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #close-lightbox:hover { color: var(--accent); }
+
+        /* Contact Section */
         .contact-section {
             background: #0a0a0a;
             padding: 60px 20px;
@@ -145,12 +177,17 @@
 </head>
 <body>
 
+    <div id="lightbox">
+        <span id="close-lightbox">&times;</span>
+        <div id="lightbox-media-box">
+            </div>
+    </div>
+
     <section class="hero">
         <h1>ZENITH</h1>
         <p>
             <strong>French</strong> Passionate <strong>Roblox GUI</strong> Creator. 
-            I develop modern interfaces (buttons, frames, animations) 
-            and bring them to life using <strong>LUA</strong> scripting. 
+            I develop modern interfaces and bring them to life using <strong>LUA</strong> scripting. 
         </p>
         <div style="margin-top: 30px;">
             <a href="#travaux" style="color: var(--accent); text-decoration: none; font-weight: bold;">VIEW MY PROJECTS ↓</a>
@@ -162,7 +199,7 @@
         
         <div class="portfolio-grid">
             
-            <div class="item">
+            <div class="item" onclick="openLightbox('video', 'videos/Video_1.mp4')">
                 <div class="media-container">
                     <video muted loop onmouseover="this.play()" onmouseout="this.pause()">
                         <source src="videos/Video_1.mp4" type="video/mp4">
@@ -174,7 +211,7 @@
                 </div>
             </div>
 
-            <div class="item">
+            <div class="item" onclick="openLightbox('video', 'videos/Video_2.mp4')">
                 <div class="media-container">
                     <video muted loop onmouseover="this.play()" onmouseout="this.pause()">
                         <source src="videos/Video_2.mp4" type="video/mp4">
@@ -182,11 +219,11 @@
                 </div>
                 <div class="item-info">
                     <h3>Full System</h3>
-                    <p>Frame Animation + Rebirth/Money/Shop/Inventory/Settings (LUA).</p>
+                    <p>Complete Shop & Inventory (LUA).</p>
                 </div>
             </div>
 
-            <div class="item">
+            <div class="item" onclick="openLightbox('video', 'videos/Video_3.mp4')">
                 <div class="media-container">
                     <video muted loop onmouseover="this.play()" onmouseout="this.pause()">
                         <source src="videos/Video_3.mp4" type="video/mp4">
@@ -194,41 +231,44 @@
                 </div>
                 <div class="item-info">
                     <h3>Health System</h3>
-                    <p>Health Increase and Reduction logic.</p>
+                    <p>Custom Bars & UI logic.</p>
                 </div>
             </div>
 
-            <div class="item">
+            <div class="item" onclick="openLightbox('image', 'images/Image_1.png')">
                 <div class="media-container">
                     <img src="images/Image_1.png" alt="GUI Design">
                 </div>
                 <div class="item-info">
                     <h3>Main Menu Skill</h3>
-                    <p>Frame for RPG game</p>
+                    <p>Style RPG / Dark Mode</p>
                 </div>
             </div>
 
-            <div class="item">
+            <div class="item" onclick="openLightbox('image', 'images/Image_2.png')">
                 <div class="media-container">
                     <img src="images/Image_2.png" alt="GUI Design">
                 </div>
                 <div class="item-info">
                     <h3>Shop Menu</h3>
-                    <p>Style Grow a Garden</p>
+                    <p>Colorful Style GUI</p>
                 </div>
             </div>
 
-            <div class="item">
+            <div class="item" onclick="openLightbox('image', 'images/Image_3.png')">
                 <div class="media-container">
                     <img src="images/Image_3.png" alt="GUI Design">
                 </div>
                 <div class="item-info">
                     <h3>RPG Result Menu</h3>
-                    <p>Style RPG</p>
+                    <p>Clean RPG Layout</p>
                 </div>
             </div>
 
-        </div> </div> <section class="contact-section">
+        </div>
+    </div>
+
+    <section class="contact-section">
         <h2>Contact Me</h2>
         <div class="contact-links">
             <a href="mailto:zenith.proemail@gmail.com" class="contact-card">
@@ -247,6 +287,37 @@
     <footer>
         © 2026 Zenith - Roblox GUI Creator
     </footer>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const mediaBox = document.getElementById('lightbox-media-box');
+        const closeBtn = document.getElementById('close-lightbox');
+
+        function openLightbox(type, src) {
+            mediaBox.innerHTML = ''; // Nettoie le contenu précédent
+            
+            if (type === 'video') {
+                mediaBox.innerHTML = `<video id="lightbox-content" controls autoplay loop><source src="${src}" type="video/mp4"></video>`;
+            } else {
+                mediaBox.innerHTML = `<img id="lightbox-content" src="${src}">`;
+            }
+            
+            lightbox.style.display = 'flex';
+        }
+
+        closeBtn.onclick = function() {
+            lightbox.style.display = 'none';
+            mediaBox.innerHTML = ''; // Arrête la vidéo en fermant
+        }
+
+        // Fermer en cliquant à côté de l'image
+        window.onclick = function(event) {
+            if (event.target == lightbox) {
+                lightbox.style.display = 'none';
+                mediaBox.innerHTML = '';
+            }
+        }
+    </script>
 
 </body>
 </html>
